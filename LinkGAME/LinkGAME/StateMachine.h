@@ -37,7 +37,7 @@ public:
 	//高亮选中的第二张图片
 	void On_SelectTwo();
 	//清空高亮中的图片
-	void relight();
+	void reset();
 	//画线任务
 	void OnAnimation();
 	//画线

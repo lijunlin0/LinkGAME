@@ -9,10 +9,11 @@ private:
 	std::map<Position, Sprite> data;
 
 public:
-	static const int HIGHT = 6;
+	static const int HEIGHT = 6;
 	static const int WIDTH = 6;
 	Map();
 	//»­³öµØÍ¼
 	void update();
+	void Select(Position p);
 };
 

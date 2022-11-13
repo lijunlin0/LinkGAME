@@ -12,7 +12,7 @@ Map::Map()
 			L.push_back(i);
 		}
 	}
-	for (int i = 0; i < HIGHT; i++)
+	for (int i = 0; i < HEIGHT; i++)
 	{
 		for (int j = 0; j < WIDTH; j++)
 		{
@@ -32,5 +32,18 @@ void Map::update()
 	for (i = data.begin(); i != data.end(); i++)
 	{
 		i->second.draw();
+	}
+}
+
+void Map::Select(Position p)
+{
+	data.find(p);
+	for (std::map<Position, Sprite>::iterator i = data.begin(); i != data.end(); i++)
+	{
+		if (i->first.get_x() == p.get_x() && i->first.get_y() == p.get_y())
+		{
+			bool n = i->second.is_select();
+			i->second.set_select(!n);
+		}
 	}
 }

@@ -13,6 +13,7 @@ private:
 	Position m_position;
 	//图片是否被消除
 	bool m_valid;
+	bool m_select;
 public:
 	Sprite(Position position, int value);
 	//判断是否被消除
@@ -23,4 +24,9 @@ public:
 	LPCTSTR image_name(int value);
 	static const int VAL_MIN = 1;
 	static const int VAL_MAX = 6;
+	void set_select(bool s);
+	bool is_select()
+	{
+		return m_select;
+	};
 };

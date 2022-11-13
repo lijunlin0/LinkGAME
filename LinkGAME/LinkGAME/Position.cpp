@@ -23,11 +23,11 @@ void Position::to_plotting(int& coordinatesX, int& coordinatesY)
 	coordinatesX = (x+1)*64;
 	coordinatesY = (y+1)*64;
 }
-int Position::get_x()
+int Position::get_x()const
 {
 	return x;
 }
-int Position::get_y()
+int Position::get_y()const
 {
 	return y;
 }
@@ -36,4 +36,13 @@ bool Position::operator<(const Position& p)const
 	int value1 = x + y * Map::WIDTH;
 	int value2 = p.x + p.y * Map::WIDTH;
 	return value1 < value2;
+}
+
+bool Position::isvalid()
+{
+	if (x < 0 || x >= Map::WIDTH || y < 0 || y >= Map::HEIGHT)
+	{
+		return false;
+	}
+	return true;
 }

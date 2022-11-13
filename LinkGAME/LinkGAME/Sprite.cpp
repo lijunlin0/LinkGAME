@@ -6,6 +6,7 @@ Sprite::Sprite(Position position, int value) :m_position(position.get_x(), posit
 	m_value = value;
 	m_valid = true;
 	loadimage(&image, image_name(m_value));
+	m_select = false;
 }
 //ÅÐ¶ÏÊÇ·ñ±»Ïû³ý
 bool Sprite::is_valid()
@@ -25,10 +26,14 @@ void Sprite::draw()
 	}
 	else
 	{
-		int X = m_position.x;
-		int Y = m_position.y;
-		m_position.to_plotting(X, Y);
-		putimage(X, Y, &image);
+		int x = m_position.x;
+		int y = m_position.y;
+		m_position.to_plotting(x, y);
+		putimage(x, y, &image);
+		if (m_select)
+		{
+			rectangle(x, y, x + 64, y + 64);
+		}
 	}
 }
 
@@ -45,3 +50,10 @@ LPCTSTR Sprite::image_name(int value)
 	case 6:return ".//images//banana.png";
 	}
 }
+
+void Sprite::set_select(bool s)
+{
+	m_select = s;
+}
+
+

@@ -12,8 +12,10 @@ public:
 	void from_plotting(int coordinatesX, int coordinatesY);
 	//Âß¼­×ø±ê×ªÏñËØ×ø±ê
 	void to_plotting(int& coordinatesX, int& coordinatesY);
-	int get_x();
-	int get_y();
+	int get_x()const;
+	int get_y()const;
 	bool operator<(const Position& p)const;
+	bool isvalid();
+
 
 };

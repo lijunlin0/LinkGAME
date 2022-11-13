@@ -6,7 +6,7 @@ void StateMachine::Set_State(State state)
 	m_State = state;
 	if (m_State == Idle)
 	{
-		relight();
+		reset();
 	}
 	else if (m_State == SelectOne)
 	{
@@ -32,7 +32,7 @@ void StateMachine::On_SelectOne() {};
 //高亮选中的第二张图片
 void StateMachine::On_SelectTwo() {};
 //清空高亮中的图片
-void StateMachine::relight() {};
+void StateMachine::reset() {};
 //画线任务
 void StateMachine::OnAnimation() {};
 //画线
