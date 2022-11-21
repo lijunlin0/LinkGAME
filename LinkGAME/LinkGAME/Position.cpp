@@ -6,6 +6,7 @@ Position::Position(int x, int y)
 	this->x = x;
 	this->y = y;
 }
+//Ä¬ÈÏ¹¹Ôì
 Position::Position()
 {
 	this->x = 0;

@@ -22,9 +22,11 @@ public:
 	void set_valid(bool valid);
 	void draw();
 	LPCTSTR image_name(int value);
-	static const int VAL_MIN = 1;
-	static const int VAL_MAX = 6;
+	static const int VAL_MIN = 1;//图片最小值
+	static const int VAL_MAX = 6;//图片最大值
+	//设置是否被选择
 	void set_select(bool s);
+	//图片是否被选择
 	bool is_select()
 	{
 		return m_select;

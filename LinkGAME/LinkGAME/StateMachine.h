@@ -1,5 +1,6 @@
 #pragma once
 #include"Animator.h"
+#include"Map.h"
 //状态
 //状态变化：
 //默认为Idle状态
@@ -26,20 +27,29 @@ private:
 	State m_State;
 	//连线动画
 	Animator* m_Animator;
+	//地图指针
+	Map* m;
 public:
-	StateMachine();
+	StateMachine(Map* m);
+
 	//设置状态
 	void Set_State(State state);
+
 	//得到当前状态
 	State Get_State();
+
 	//高亮选中的第一张图片
 	void On_SelectOne();
+
 	//高亮选中的第二张图片
 	void On_SelectTwo();
+
 	//清空高亮中的图片
 	void reset();
+
 	//画线任务
 	void OnAnimation();
+
 	//画线
 	void Update();
 

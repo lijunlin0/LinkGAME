@@ -5,9 +5,9 @@
 Map::Map()
 {
 	std::vector<int> L;
-	for (int i = Sprite::VAL_MIN; i <= Sprite::VAL_MAX; i++)
+	for (int i = Sprite::VAL_MIN; i <= Sprite::VAL_MAX; i++)//放6个1~6的数字到vector数组
 	{
-		for (int j = 0; j < 6; j++)
+		for (int j = 0; j < HEIGHT; j++)
 		{
 			L.push_back(i);
 		}
@@ -35,15 +35,26 @@ void Map::update()
 	}
 }
 
-void Map::Select(Position p)
+
+void Map::set_p1(Position p)
 {
-	data.find(p);
+	p1.x = p.x;
+	p1.y = p.y;
+}
+
+void Map::set_p2(Position p)
+{
+	p2.x = p.x;
+	p2.y = p.y;
+};
+
+void Map::highlight(Position p,bool b)
+{
 	for (std::map<Position, Sprite>::iterator i = data.begin(); i != data.end(); i++)
 	{
 		if (i->first.get_x() == p.get_x() && i->first.get_y() == p.get_y())
 		{
-			bool n = i->second.is_select();
-			i->second.set_select(!n);
+			i->second.set_select(b);
 		}
 	}
-}
+};
