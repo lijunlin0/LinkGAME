@@ -1,16 +1,18 @@
 #include"Sprite.h"
 #include"Map.h"
 
-Sprite::Sprite(Position position, int value) :m_position(position.get_x(), position.get_y())
+void Sprite::init(Position position, int value)
 {
 	m_value = value;
 	m_valid = true;
 	loadimage(&image, image_name(m_value));
 	m_select = false;
-			int x = m_position.x;
-		int y = m_position.y;
-		m_position.to_plotting(x, y);
-		putimage(x, y, &image);
+	int x = m_position.x;
+	int y = m_position.y;
+	m_position.x = position.x;
+	m_position.y = position.y;
+	m_position.to_plotting(x, y);
+	putimage(x, y, &image);
 }
 //ÅÐ¶ÏÊÇ·ñ±»Ïû³ý
 bool Sprite::is_valid()
@@ -21,6 +23,7 @@ bool Sprite::is_valid()
 void Sprite::set_valid(bool valid)
 {
 	m_valid = valid;
+	update_image();
 }
 void Sprite::draw()
 {
@@ -48,10 +51,19 @@ LPCTSTR Sprite::image_name(int value)
 void Sprite::set_select(bool s)
 {
 	m_select = s;
-	
+	update_image();
+}
+
+void Sprite::update_image()
+{
 	int x = m_position.x;
 	int y = m_position.y;
 	m_position.to_plotting(x, y);
+	if (!m_valid)
+	{
+		clearrectangle(x, y, x + 64, y + 64);
+		return;
+	}
 	if (m_select)
 	{
 		rectangle(x, y, x + 64, y + 64);
@@ -62,5 +74,4 @@ void Sprite::set_select(bool s)
 		putimage(x, y, &image);
 	}
 }
-
 

@@ -40,6 +40,7 @@ void StateMachine::On_SelectOne()
 void StateMachine::On_SelectTwo()
 {
 	m->highlight(m->get_p2(),true);
+	m->eliminate(m->get_p1(), m->get_p2());
 	Set_State(State::Animation);
 };
 //清空高亮中的图片

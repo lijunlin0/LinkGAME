@@ -1,17 +1,6 @@
 #include"Position.h"
 #include"Map.h"
 
-Position::Position(int x, int y)
-{
-	this->x = x;
-	this->y = y;
-}
-//默认构造
-Position::Position()
-{
-	this->x = 0;
-	this->y = 0;
-}
 //像素坐标转逻辑坐标
 void Position::from_plotting(int coordinatesX, int coordinatesY)
 {
@@ -23,14 +12,6 @@ void Position::to_plotting(int& coordinatesX, int& coordinatesY)
 {
 	coordinatesX = (x+1)*64;
 	coordinatesY = (y+1)*64;
-}
-int Position::get_x()const
-{
-	return x;
-}
-int Position::get_y()const
-{
-	return y;
 }
 bool Position::operator<(const Position& p)const
 {

@@ -12,7 +12,7 @@ int main()
 	srand((unsigned)time(NULL));//根据系统时间改变的随机种子
 	initgraph(512,512);//窗口大小：512*512
 	Map m;
-	StateMachine s(&m);
+	StateMachine s(&m);//创建状态机
 	ExMessage msg;//创建消息变量
 	setlinestyle(PS_SOLID, 1);//设置线宽
 	while (true)
@@ -22,8 +22,7 @@ int main()
 		{
 			int x = msg.x;
 			int y = msg.y;
-			cout << x << "," << y << endl;
-			Position p(0, 0);
+			Position p;
 			 p.from_plotting(x, y);
 			if (p.isvalid())
 			{

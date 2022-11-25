@@ -1,6 +1,7 @@
 #include"Map.h"
 #include<vector>
 #include"Sprite.h"
+#include<iostream>
 
 Map::Map()
 {
@@ -16,23 +17,31 @@ Map::Map()
 	{
 		for (int j = 0; j < WIDTH; j++)
 		{
-			Position p(i, j);
 			int index = rand() % L.size();
-			Sprite s(p,L[index]);
+			Position p;
+			p.x = i;
+			p.y = j;
+			data[i][j].init(p, L[index]);
 			L[index] = L[L.size() - 1];
 			L.pop_back();
-			data.insert(std::pair<Position, Sprite>(p, s));
 		}
 	}
 }
 //画出地图
 void Map::update()
 {
-	std::map<Position, Sprite>::iterator i;
-	for (i = data.begin(); i != data.end(); i++)
+	for (int i=0;i<HEIGHT;i++)
 	{
-		i->second.draw();
+		for (int j = 0; j < WIDTH; j++)
+		{
+			data[i][j].draw();
+		}
 	}
+
+	//for (i = data.begin(); i != data.end(); i++)
+	//{
+	//	i->second.draw();
+	//}
 }
 
 
@@ -50,11 +59,36 @@ void Map::set_p2(Position p)
 
 void Map::highlight(Position p,bool b)
 {
-	for (std::map<Position, Sprite>::iterator i = data.begin(); i != data.end(); i++)
+	for (int i = 0; i < HEIGHT; i++)
 	{
-		if (i->first.get_x() == p.get_x() && i->first.get_y() == p.get_y())
+		for (int j = 0; j < WIDTH; j++)
+		{
+			if (i == p.x && j == p.y)
+			{
+				data[i][j].set_select(b);
+			}
+		}
+	}
+
+	/*for (std::map<Position, Sprite>::iterator i = data.begin(); i != data.end(); i++)
+	{
+		if (i->first.x == p.x && i->first.y == p.y)
 		{
 			i->second.set_select(b);
 		}
-	}
+	}*/
 };
+
+//入口函数
+bool Map::eliminate(Position p1, Position p2)
+{
+	Sprite& s1 = data[p1.y][p1.x];
+	Sprite& s2 = data[p2.y][p2.x];
+	if (s1.get_value() == s2.get_value())
+	{
+		std::cout << "iawheifhiaoheoifhaw";
+		s1.set_valid(false);
+		s2.set_valid(false);
+	}
+	return true;
+}
