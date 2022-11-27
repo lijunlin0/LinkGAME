@@ -18,7 +18,7 @@ private:
 public:
 	void init(Position position, int value);
 	//判断是否被消除
-	bool is_valid();
+    bool is_valid()const;
 
 	//自定消除状态
 	void set_valid(bool valid);

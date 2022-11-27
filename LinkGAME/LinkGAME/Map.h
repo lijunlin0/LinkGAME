@@ -1,5 +1,5 @@
 #pragma once
-#include<map>
+#include<vector>
 #include"Position.h"
 #include"Sprite.h"
 //地图数据(一个逻辑位置对应一张图片)
@@ -13,11 +13,11 @@ private:
 	Position p1;
 	Position p2;
 	//0折连接
-	bool z_connection(Position p1, Position p2);
+	bool link_0(Position p1, Position p2, std::vector<Position>& ps);
 	//1折连接
-	bool o_connection(Position p1, Position p2);
+	bool link_1(Position p1, Position p2, std::vector<Position>& ps);
 	//2折连接
-	bool t_connection(Position p1, Position p2);
+	bool link_2(Position p1, Position p2, std::vector<Position>& ps);
 
 public:
 	
@@ -39,8 +39,11 @@ public:
 	//是否高亮图片
 	void highlight(Position p,bool b);
 	//入口函数
-	bool eliminate(Position p1, Position p2);
-
-
+	void eliminate(Position p);
+	bool link(Position p1, Position p2, std::vector<Position>& ps);
+	const Sprite& get_sprite(Position p)
+	{
+		return data[p.y][p.x];
+	}
 };
 

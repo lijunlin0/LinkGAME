@@ -15,7 +15,7 @@ void Sprite::init(Position position, int value)
 	putimage(x, y, &image);
 }
 //ÅÐ¶ÏÊÇ·ñ±»Ïû³ý
-bool Sprite::is_valid()
+bool Sprite::is_valid()const
 {
 	return m_valid;
 };
@@ -58,7 +58,8 @@ void Sprite::update_image()
 {
 	int x = m_position.x;
 	int y = m_position.y;
-	m_position.to_plotting(x, y);
+	m_position.to_plotting
+	(x, y);
 	if (!m_valid)
 	{
 		clearrectangle(x, y, x + 64, y + 64);

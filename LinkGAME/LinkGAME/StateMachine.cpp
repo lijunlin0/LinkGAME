@@ -1,5 +1,6 @@
 #include"StateMachine.h"
 #include"Map.h"
+#include<vector>
 StateMachine::StateMachine(Map* mp)
 {
 	m = mp;
@@ -40,8 +41,19 @@ void StateMachine::On_SelectOne()
 void StateMachine::On_SelectTwo()
 {
 	m->highlight(m->get_p2(),true);
-	m->eliminate(m->get_p1(), m->get_p2());
-	Set_State(State::Animation);
+	std::vector<Position> v;
+	if (m->link(m->get_p1(), m->get_p2(), v))
+	{
+		m->eliminate(m->get_p1());
+		m->eliminate(m->get_p2());
+		Set_State(State::Animation);
+	}
+	else
+	{
+		reset();
+		Set_State(State::Idle);
+	}
+	
 };
 //清空高亮中的图片
 void StateMachine::reset()

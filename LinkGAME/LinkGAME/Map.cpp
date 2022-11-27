@@ -19,8 +19,8 @@ Map::Map()
 		{
 			int index = rand() % L.size();
 			Position p;
-			p.x = i;
-			p.y = j;
+			p.x = j;
+			p.y = i;
 			data[i][j].init(p, L[index]);
 			L[index] = L[L.size() - 1];
 			L.pop_back();
@@ -63,7 +63,7 @@ void Map::highlight(Position p,bool b)
 	{
 		for (int j = 0; j < WIDTH; j++)
 		{
-			if (i == p.x && j == p.y)
+			if (j == p.x && i == p.y)
 			{
 				data[i][j].set_select(b);
 			}
@@ -80,15 +80,66 @@ void Map::highlight(Position p,bool b)
 };
 
 //入口函数
-bool Map::eliminate(Position p1, Position p2)
+void Map::eliminate(Position p)
 {
-	Sprite& s1 = data[p1.y][p1.x];
-	Sprite& s2 = data[p2.y][p2.x];
-	if (s1.get_value() == s2.get_value())
+	data[p.y][p.x].set_valid(false);
+}
+
+bool Map::link(Position p1, Position p2, std::vector<Position>& ps)
+{
+	if (data[p1.y][p1.x].get_value() != data[p2.y][p2.x].get_value())
 	{
-		std::cout << "iawheifhiaoheoifhaw";
-		s1.set_valid(false);
-		s2.set_valid(false);
+		return false;
 	}
-	return true;
+	return link_0(p1, p2, ps) || link_1(p1, p2, ps) || link_2(p1, p2, ps);
+}
+//0折连接
+bool Map::link_0(Position p1, Position p2, std::vector<Position>& ps)
+{
+	if (p1.x == p2.x)
+	{
+		int miny = (p1.y < p2.y ? p1.y : p2.y)+1;
+		int maxy = (p1.y < p2.y ? p2.y : p1.y)-1;
+		for (int y = miny; y <= maxy; y++)
+		{
+			if (data[y][p1.x].is_valid())
+			{
+				return false;
+			}
+		}
+		ps.push_back(p1);
+		ps.push_back(p2);
+		return true;
+	}
+	else if (p1.y==p2.y)
+	{
+		int minx = (p1.x < p2.x ? p1.x : p2.x) + 1;
+		int maxx = (p1.x < p2.x ? p2.x : p1.x) - 1;
+		for (int x = minx; x <= maxx; x++)
+		{
+			if (data[p1.y][x].is_valid())
+			{
+				return false;
+			}
+		}
+		ps.push_back(p1);
+		ps.push_back(p2);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
+}
+
+//1折连接
+bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
+{
+	return false;
+}
+//2折连接
+bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
+{
+	return false;
 }
