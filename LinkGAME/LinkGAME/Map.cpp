@@ -146,12 +146,12 @@ bool Map::link_0(Position p1, Position p2, std::vector<Position>& ps)
 //1уша╛╫с
 bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 {
-	auto F=[&](int start_x,int end_x,int start_y,int end_y)->bool
+	auto F=[&](int start_x,int end_x,int start_y,int end_y,int xx,int yy)->bool
 	{
 		bool result = true;
-		for(int y=start_y;y<=end_y;y++)
+		for(int y=start_y+1;y<end_y;y++)
 	    {
-	    	if(data[y][start_x].is_valid())
+	    	if(data[y][xx].is_valid())
 	    	{
 	    		result=false;
 	    		break;
@@ -159,9 +159,10 @@ bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 	    }
 	    if(result)
 	    {
-	    	for(int x=start_x;x<=end_x;x++)
+
+	    	for(int x=start_x+1;x<end_x;x++)
 	    	{
-	    		if(data[end_y][x].is_valid())
+	    		if(data[yy][x].is_valid())
 	    		{
 	    			result=false;
 	    		    break;
@@ -194,8 +195,10 @@ bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 	int end_y=L.y<C1.y?C1.y:L.y;
 	int start_x=C1.x<R.x?C1.x:R.x;
 	int end_x=C1.x<R.x?R.x:C1.x;
+	int xx = C1.x;
+	int yy = C1.y;
 
-	if(F(start_x,end_x,start_y,end_y))
+	if(F(start_x,end_x,start_y,end_y,xx,yy)&&!data[C1.y][C1.x].is_valid())
 	{
 		ps.push_back(L);
 		ps.push_back(C1);
@@ -208,9 +211,10 @@ bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 	end_y=R.y<C2.y?C2.y:R.y;
 	start_x=C2.x<L.x?C2.x:L.x;
 	end_x=C2.x<L.x?L.x:C2.x;
+	xx = C2.x;
+	yy = C2.y;
 
-
-	if(F(start_x,end_x,start_y,end_y))
+	if(F(start_x,end_x,start_y,end_y,xx,yy)&&!data[C2.y][C2.x].is_valid())
 	{
 		ps.push_back(L);
 		ps.push_back(C2);
