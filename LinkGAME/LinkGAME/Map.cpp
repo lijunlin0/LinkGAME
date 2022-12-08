@@ -143,78 +143,64 @@ bool Map::link_0(Position p1, Position p2, std::vector<Position>& ps)
 
 }
 
-//1折连接
+//一折连接
 bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 {
-	auto F=[&](int start_x,int end_x,int start_y,int end_y,int xx,int yy)->bool
+	auto FX = [&](int start_x, int end_x, int y)
 	{
-		bool result = true;
-		for(int y=start_y+1;y<end_y;y++)
-	    {
-	    	if(data[y][xx].is_valid())
-	    	{
-	    		result=false;
-	    		break;
-	    	}
-	    }
-	    if(result)
-	    {
-
-	    	for(int x=start_x+1;x<end_x;x++)
-	    	{
-	    		if(data[yy][x].is_valid())
-	    		{
-	    			result=false;
-	    		    break;
-	    		}
-	    	}
-	    }
-		return result;
+		if (start_x > end_x)
+		{
+			int temp = start_x;
+			start_x = end_x;
+			end_x = temp;
+		}
+		for (int x = start_x + 1; x < end_x; x++)
+		{
+			if (data[y][x].is_valid())
+			{
+				return false;
+			}
+		}
+		return true;
 	};
-	Position L;
-	Position R;
-	if(p1.x<p2.x)
-	{
-		L=p1;
-		R=p2;
-	}
-	else
-	{
-		L=p2;
-		R=p1;
-	}
-	Position C1;
-	C1.x=L.x;
-	C1.y=R.y;
-	Position C2;
-	C2.x=R.x;
-	C2.y=L.y;
-	
-	// L -> C1 -> R
-	int start_y=L.y<C1.y?L.y:C1.y;
-	int end_y=L.y<C1.y?C1.y:L.y;
-	int start_x=C1.x<R.x?C1.x:R.x;
-	int end_x=C1.x<R.x?R.x:C1.x;
-	int xx = C1.x;
-	int yy = C1.y;
 
-	if(F(start_x,end_x,start_y,end_y,xx,yy)&&!data[C1.y][C1.x].is_valid())
+	auto FY = [&](int start_y, int end_y, int x)
+	{
+		if (start_y > end_y)
+		{
+			int temp = start_y;
+			start_y = end_y;
+			end_y = temp;
+		}
+		for (int y = start_y + 1; y < end_y; y++)
+		{
+			if (data[y][x].is_valid())
+			{
+				return false;
+			}
+		}
+		return true;
+	};
+
+	Position L = p1.x < p2.x ? p1 : p2;
+	Position R = p1.x < p2.x ? p2 : p1;
+	Position C1;
+	C1.x = L.x;
+	C1.y = R.y;
+	Position C2;
+	C2.x = R.x;
+	C2.x = L.y;
+
+	//L -> C1 -> R;
+	if (FX(C1.x,R.x,C1.y) && FY(C1.y,L.y,C1.x) && !data[C1.y][C1.x].is_valid())
 	{
 		ps.push_back(L);
 		ps.push_back(C1);
 		ps.push_back(R);
 		return true;
 	}
-
-	// L -> C2 -> R
-	start_y=R.y<C2.y?R.y:C2.y;
-	end_y=R.y<C2.y?C2.y:R.y;
-	start_x=C2.x<L.x?C2.x:L.x;
-	end_x=C2.x<L.x?L.x:C2.x;
-	xx = C2.x;
-	yy = C2.y;
-
-	if(F(start_x,end_x,start_y,end_y,xx,yy)&&!data[C2.y][C2.x].is_valid())
+	//L -> C2 -> R;
+	if (FX(C2.x, L.x, C2.y) && FY(C2.y, R.y, C2.x) && !data[C2.y][C2.x].is_valid())
 	{
 		ps.push_back(L);
 		ps.push_back(C2);
