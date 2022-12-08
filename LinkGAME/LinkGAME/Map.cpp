@@ -2,6 +2,10 @@
 #include<vector>
 #include"Sprite.h"
 #include<iostream>
+#include<windows.h>
+#include<Mmsystem.h>
+#pragma comment(lib,"winmm.lib")
+
 
 Map::Map()
 {
@@ -87,11 +91,17 @@ void Map::eliminate(Position p)
 
 bool Map::link(Position p1, Position p2, std::vector<Position>& ps)
 {
-	if (data[p1.y][p1.x].get_value() != data[p2.y][p2.x].get_value())
+	
+	if (data[p1.y][p1.x].get_value() != data[p2.y][p2.x].get_value())//如果选中的图片不同，直接退出
 	{
 		return false;
 	}
-	return link_0(p1, p2, ps) || link_1(p1, p2, ps) || link_2(p1, p2, ps);
+	bool result = link_0(p1, p2, ps) || link_1(p1, p2, ps) || link_2(p1, p2, ps);
+	if (result)
+	{
+		PlaySound(("C:/D/GitHub/LinkGAME/LinkGAME/LinkGAME/sound/boom.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		return result;
+	}
 }
 //0折连接
 bool Map::link_0(Position p1, Position p2, std::vector<Position>& ps)
@@ -136,315 +146,84 @@ bool Map::link_0(Position p1, Position p2, std::vector<Position>& ps)
 //1折连接
 bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 {
-	//data[p2.y][p1.x]
-	//data[p1.y][p2.x]
+	auto F=[&](int start_x,int end_x,int start_y,int end_y)->bool
+	{
+		bool result = true;
+		for(int y=start_y;y<=end_y;y++)
+	    {
+	    	if(data[y][start_x].is_valid())
+	    	{
+	    		result=false;
+	    		break;
+	    	}
+	    }
+	    if(result)
+	    {
+	    	for(int x=start_x;x<=end_x;x++)
+	    	{
+	    		if(data[end_y][x].is_valid())
+	    		{
+	    			result=false;
+	    		    break;
+	    		}
+	    	}
+	    }
+		return result;
+	};
 	Position L;
 	Position R;
-	if (p1.x != p2.x && p1.y != p2.y)
+	if(p1.x<p2.x)
 	{
-		if (p1.x > p2.x)
-		{
-			L.x = p2.x;
-			L.y = p1.y;
-			R.x = p1.x;
-			R.y = p2.y;
-		}
-		else
-		{
-			L.x = p1.x;
-			L.y = p2.y;
-			R.x = p2.x;
-			R.y = p1.y;
-		}
-		if (p1.y > p2.y)
-		{
-			if (p1.x < p2.x)
-			{
-				bool true_1 = false;//第一条路线是否能连接
-				bool true_2 = false;//第二条路线是否能连接
+		L=p1;
+		R=p2;
+	}
+	else
+	{
+		L=p2;
+		R=p1;
+	}
+	Position C1;
+	C1.x=L.x;
+	C1.y=R.y;
+	Position C2;
+	C2.x=R.x;
+	C2.y=L.y;
+	
+	// L -> C1 -> R
+	int start_y=L.y<C1.y?L.y:C1.y;
+	int end_y=L.y<C1.y?C1.y:L.y;
+	int start_x=C1.x<R.x?C1.x:R.x;
+	int end_x=C1.x<R.x?R.x:C1.x;
 
-				for (int y = L.y; y <= p1.y - 1; y++)
-				{
-					if (data[y][L.x].is_valid())
-					{
-						true_1 = false;
-					}
-					else
-					{
-						true_1 = true;
-					}
-				}
+	if(F(start_x,end_x,start_y,end_y))
+	{
+		ps.push_back(L);
+		ps.push_back(C1);
+		ps.push_back(R);
+		return true;
+	}
 
-
-				for (int x = L.x; x <= p2.x - 1; x++)
-				{
-					if (data[L.y][x].is_valid())
-					{
-						true_2 = false;
-					}
-					else
-					{
-						true_2 = true;
-					}
-				}
-
-				if (true_1 && true_2)//判断完第一条路线
-				{
-					return true;
-				}
-
-				for (int y = R.y; y >= p2.y + 1; y--)
-				{
-					if (data[y][R.x].is_valid())
-					{
-						true_1 = false;
-					}
-					else
-					{
-						true_1 = true;
-					}
-				}
-
-				for (int x = R.x; x >= p1.x + 1; x--)
-				{
-					if (data[R.y][x].is_valid())
-					{
-						true_2 = false;
-					}
-					else
-					{
-						true_2 = true;
-					}
-				}
-
-				if (true_1 && true_2)//判断完第二条路线
-				{
-					return true;
-				}
-
-				else//两条路线都不能连接，则不能连接
-				{
-					return false;
-				}
-			}
+	// L -> C2 -> R
+	start_y=R.y<C2.y?R.y:C2.y;
+	end_y=R.y<C2.y?C2.y:R.y;
+	start_x=C2.x<L.x?C2.x:L.x;
+	end_x=C2.x<L.x?L.x:C2.x;
 
 
-
-			else
-			{
-				bool true_1 = false;//第一条路线是否能连接
-				bool true_2 = false;//第二条路线是否能连接
-
-				for (int y = L.y; y >= p2.y + 1; y--)
-				{
-					if (data[y][L.x].is_valid())
-					{
-						true_1 = false;
-					}
-					else
-					{
-						true_1 = true;
-					}
-				}
-
-				for (int x = L.x; x <= p1.x - 1; x++)
-				{
-					if (data[L.y][x].is_valid())
-					{
-						true_2 = false;
-					}
-					else
-					{
-						true_2 = true;
-					}
-				}
-
-				if (true_1 && true_2)//判断完第一条路线
-				{
-					return true;
-				}
-				
-				for (int y = R.y; y <= p1.y - 1; y++)
-				{
-					if (data[y][R.x].is_valid())
-					{
-						true_1 = false;
-					}
-					else
-					{
-						true_1 = true;
-					}
-				}
-
-				for (int x = R.x; x >= p2.x + 1; x--)
-				{
-					if (data[R.y][x].is_valid())
-					{
-						true_2 = false;
-					}
-					else
-					{
-						true_2 = true;
-					}
-				}
-
-				if (true_1 && true_2)//判断完第二条路线
-				{
-					return true;
-				}
-
-				else//两条路线都不能连接，则不能连接
-				{
-					return false;
-				}
-
-			}
-
-		}
-
-
-
-		else
-		{
-			bool true_1 = false;//第一条路线是否能连接
-			bool true_2 = false;//第二条路线是否能连接
-
-			if (p1.x < p2.x)
-			{
-				for (int y = L.y; y >= p1.y + 1; y--)
-				{
-					if (data[y][L.x].is_valid())
-					{
-						true_1 = false;
-					}
-					else
-					{
-						true_1 = true;
-					}
-				}
-
-				for (int x = L.x; x <= p2.x - 1; x++)
-				{
-					if (data[L.y][x].is_valid())
-					{
-						true_2 = false;
-					}
-					else
-					{
-						true_2 = true;
-					}
-				}
-
-				if (true_1 && true_2)//判断完第一条路线
-				{
-					return true;
-				}
-
-				for (int y = R.y; y <= p2.y - 1; y++)
-				{
-					if (data[y][R.x].is_valid())
-					{
-						true_1 = false;
-					}
-					else
-					{
-						true_1 = true;
-					}
-				}
-
-				for (int x = R.x; x >= p1.x + 1; x--)
-				{
-					if (data[R.y][x].is_valid())
-					{
-						true_2 = false;
-					} 
-					else
-					{
-						true_2 = true;
-					}
-				}
-
-				if (true_1 && true_2)//判断完第一条路线
-				{
-					return true;
-				}
-
-				return false;
-			}
-			else
-			{
-				bool true_1 = false;//第一条路线是否能连接
-				bool true_2 = false;//第二条路线是否能连接
-
-				for (int y = L.y; y <= p2.y - 1; y++)
-				{
-					if (data[y][L.x].is_valid())
-					{
-						true_1 = false;
-					}
-					else
-					{
-						true_1 = true;
-					}
-				}
-
-				for (int x = L.x; x <= p1.x - 1; x++)
-				{
-					if (data[L.y][x].is_valid())
-					{
-						true_2 = false;
-					}
-					else
-					{
-						true_2 = true;
-					}
-				}
-
-				if (true_1 && true_2)//判断完第一条路线
-				{
-					return true;
-				}
-
-				for (int y = R.y; y >= p1.y + 1; y--)
-				{
-					if (data[y][R.x].is_valid())
-					{
-						true_1 = false;
-					}
-					else
-					{
-						true_1 = true;
-					}
-				}
-
-				for (int x = R.x; x >= p2.x + 1; x--)
-				{
-					if (data[R.y][x].is_valid())
-					{
-						true_2 = false;
-					}
-					else
-					{
-						true_2 = true;
-					}
-				}
-
-				if (true_1 && true_2)//判断完第一条路线
-				{
-					return true;
-				}
-
-				else//两条路线都不能连接，则不能连接
-				{
-					return false;
-				}
-			}
-		}
+	if(F(start_x,end_x,start_y,end_y))
+	{
+		ps.push_back(L);
+		ps.push_back(C2);
+		ps.push_back(R);
+		return true;
 	}
 	return false;
 }
+
 //2折连接
 bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 {
+
+
 	return false;
 }

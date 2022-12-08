@@ -5,6 +5,9 @@
 #include"Position.h"
 #include"Sprite.h"
 #include"StateMachine.h"
+#include <chrono>
+#include <thread>
+
 using namespace std;
 
 int main()
@@ -54,7 +57,8 @@ int main()
 			}
 		}
 		m.update();
-		Sleep(1);
+		this_thread::sleep_for(std::chrono::milliseconds(6));
+
 	}
 	getchar();
 	closegraph();
