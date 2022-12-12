@@ -1,6 +1,8 @@
 #include"StateMachine.h"
 #include"Map.h"
 #include<vector>
+#include <chrono>
+#include <thread>
 StateMachine::StateMachine(Map* mp)
 {
 	m = mp;
@@ -47,6 +49,31 @@ void StateMachine::On_SelectTwo()
 		m->eliminate(m->get_p1());
 		m->eliminate(m->get_p2());
 		Set_State(State::Animation);
+		std::this_thread::sleep_for(std::chrono::milliseconds(6));
+		setlinestyle(PS_SOLID, 4);
+		setlinecolor(WHITE);
+		for (int i = 0; i < v.size() - 1; i++)
+		{
+			int x1 = 0;
+			int y1 = 0;
+			int x2 = 0;
+			int y2 = 0;
+			v[i].to_plotting(x1, y1,Position::LOGIC_TO_PIXEL_FACTOR/2);
+			v[i+1].to_plotting(x2, y2,Position::LOGIC_TO_PIXEL_FACTOR/2);
+			line(x1, y1, x2,y2);
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		setlinecolor(BLACK);
+		for (int i = 0; i < v.size() - 1; i++)
+		{
+			int x1 = 0;
+			int y1 = 0;
+			int x2 = 0;
+			int y2 = 0;
+			v[i].to_plotting(x1, y1, Position::LOGIC_TO_PIXEL_FACTOR / 2);
+			v[i + 1].to_plotting(x2, y2, Position::LOGIC_TO_PIXEL_FACTOR / 2);
+			line(x1, y1, x2, y2);
+		}
 	}
 	else
 	{

@@ -45,7 +45,5 @@ public:
 	{
 		return data[p.y][p.x];
 	}
-
-	bool link_11(Position p1, Position p2, std::vector<Position>& ps);
 };
 

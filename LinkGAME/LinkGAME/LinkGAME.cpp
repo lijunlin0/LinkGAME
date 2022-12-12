@@ -17,7 +17,6 @@ int main()
 	Map m;
 	StateMachine s(&m);//创建状态机
 	ExMessage msg;//创建消息变量
-	setlinestyle(PS_SOLID, 1);//设置线宽
 	while (true)
 	{
 		bool b = peekmessage(&msg, EX_MOUSE);

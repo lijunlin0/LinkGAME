@@ -7,8 +7,8 @@ void Sprite::init(Position position, int value)
 	m_valid = true;
 	loadimage(&image, image_name(m_value));
 	m_select = false;
-	int x = m_position.x;
-	int y = m_position.y;
+	int x = 0;
+	int y = 0;
 	m_position.x = position.x;
 	m_position.y = position.y;
 	m_position.to_plotting(x, y);
@@ -67,6 +67,8 @@ void Sprite::update_image()
 	}
 	if (m_select)
 	{
+		setlinecolor(WHITE);
+		setlinestyle(PS_SOLID, 1);//…Ë÷√œﬂøÌ
 		rectangle(x, y, x + 64, y + 64);
 	}
 	else

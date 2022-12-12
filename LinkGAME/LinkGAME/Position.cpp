@@ -4,15 +4,19 @@
 //ÏñËØ×ø±ê×ªÂß¼­×ø±ê
 void Position::from_plotting(int coordinatesX, int coordinatesY)
 {
-	x = (coordinatesX-64)/ 64;
-	y = (coordinatesY-64)/64;
+	int factor = LOGIC_TO_PIXEL_FACTOR;
+	x = (coordinatesX- factor)/ factor;
+	y = (coordinatesY- factor)/ factor;
 }
 //Âß¼­×ø±ê×ªÏñËØ×ø±ê
-void Position::to_plotting(int& coordinatesX, int& coordinatesY)
+void Position::to_plotting(int& coordinatesX, int& coordinatesY,int offset)
 {
-	coordinatesX = (x+1)*64;
-	coordinatesY = (y+1)*64;
+	int factor = LOGIC_TO_PIXEL_FACTOR;
+	coordinatesX = (x+1)* factor+offset;
+	coordinatesY = (y+1)* factor+offset;
 }
+
+
 bool Position::operator<(const Position& p)const
 {
 	int value1 = x + y * Map::WIDTH;

@@ -194,17 +194,18 @@ bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 	//L -> C1 -> R;
 	if (FX(C1.x,R.x,C1.y) && FY(C1.y,L.y,C1.x) && !data[C1.y][C1.x].is_valid())
 	{
-		ps.push_back(L);
+		ps.push_back(p1);
 		ps.push_back(C1);
-		ps.push_back(R);
+		ps.push_back(p2);
 		return true;
 	}
+
 	//L -> C2 -> R;
 	if (FX(C2.x, L.x, C2.y) && FY(C2.y, R.y, C2.x) && !data[C2.y][C2.x].is_valid())
 	{
-		ps.push_back(L);
+		ps.push_back(p1);
 		ps.push_back(C2);
-		ps.push_back(R);
+		ps.push_back(p2);
 		return true;
 	}
 	return false;
@@ -213,7 +214,66 @@ bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 //2折连接
 bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 {
-
-
+	//上循环
+	Position A;
+	std::cout << "进入上循环" << std::endl;
+	for (int y=p1.y-1;y >= 0;y--)
+	{
+		A.x = p1.x;
+		A.y = y;
+		if (data[A.y][A.x].is_valid())
+		{
+			break;
+		}
+		if (link_0(p1,A,ps) && link_1(A, p2, ps))
+		{
+			return true;
+		}
+	}
+	//下循环
+	std::cout << "进入下循环" << std::endl;
+	 for (int y=p1.y+1;y < HEIGHT;y++)
+	{
+		A.x = p1.x;
+		A.y = y;
+		if (data[A.y][A.x].is_valid())
+		{
+			break;
+		}
+		if (link_0(p1, A, ps) && link_1(A, p2, ps))
+		{
+			return true;
+		}
+	}
+	//左循环
+	 std::cout << "进入左循环" << std::endl;
+	 for (int x=p1.x-1;x >= 0;x--)
+	 {
+		 A.y = p1.y;
+		 A.x = x;
+		 if (data[A.y][A.x].is_valid())
+		 {
+			 break;
+		 }
+		 if (link_0(p1, A, ps) && link_1(A, p2, ps))
+		 {
+			 return true;
+		 }
+	 }
+	//右循环
+	 std::cout << "进入上循环" << std::endl;
+	 for (int x = p1.x+1; x < WIDTH; x++)
+	 {
+		 A.y = p1.y;
+		 A.x = x;
+		 if (data[A.y][A.x].is_valid())
+		 {
+			 break;
+		 }
+		 if (link_0(p1, A, ps) && link_1(A, p2, ps))
+		 {
+			 return true;
+		 }
+	 }
 	return false;
 }
