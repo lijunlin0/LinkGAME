@@ -5,15 +5,15 @@
 void Position::from_plotting(int coordinatesX, int coordinatesY)
 {
 	int factor = LOGIC_TO_PIXEL_FACTOR;
-	x = (coordinatesX- factor)/ factor;
-	y = (coordinatesY- factor)/ factor;
+	x = coordinatesX/ factor;
+	y = coordinatesY/ factor;
 }
 //Âß¼­×ø±ê×ªÏñËØ×ø±ê
 void Position::to_plotting(int& coordinatesX, int& coordinatesY,int offset)
 {
 	int factor = LOGIC_TO_PIXEL_FACTOR;
-	coordinatesX = (x+1)* factor+offset;
-	coordinatesY = (y+1)* factor+offset;
+	coordinatesX = x* factor+offset;
+	coordinatesY = y* factor+offset;
 }
 
 

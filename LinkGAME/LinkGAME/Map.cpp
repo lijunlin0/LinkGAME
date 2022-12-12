@@ -12,7 +12,7 @@ Map::Map()
 	std::vector<int> L;
 	for (int i = Sprite::VAL_MIN; i <= Sprite::VAL_MAX; i++)//放6个1~6的数字到vector数组
 	{
-		for (int j = 0; j < HEIGHT; j++)
+		for (int j = 0; j < HEIGHT-2; j++)
 		{
 			L.push_back(i);
 		}
@@ -21,13 +21,21 @@ Map::Map()
 	{
 		for (int j = 0; j < WIDTH; j++)
 		{
-			int index = rand() % L.size();
 			Position p;
 			p.x = j;
 			p.y = i;
-			data[i][j].init(p, L[index]);
-			L[index] = L[L.size() - 1];
-			L.pop_back();
+			if (i == 0 || j == 0||i==WIDTH-1||j==HEIGHT-1)
+			{
+				data[i][j].init(p, 1);
+				data[i][j].set_valid(false);
+			}
+			else
+			{
+				int index = rand() % L.size();
+				data[i][j].init(p, L[index]);
+				L[index] = L[L.size() - 1];
+				L.pop_back();
+			}
 		}
 	}
 }
@@ -189,7 +197,7 @@ bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 	C1.y = R.y;
 	Position C2;
 	C2.x = R.x;
-	C2.x = L.y;
+	C2.y = L.y;
 
 	//L -> C1 -> R;
 	if (FX(C1.x,R.x,C1.y) && FY(C1.y,L.y,C1.x) && !data[C1.y][C1.x].is_valid())
@@ -216,7 +224,6 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 {
 	//上循环
 	Position A;
-	std::cout << "进入上循环" << std::endl;
 	for (int y=p1.y-1;y >= 0;y--)
 	{
 		A.x = p1.x;
@@ -225,13 +232,13 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		{
 			break;
 		}
+		ps.clear();
 		if (link_0(p1,A,ps) && link_1(A, p2, ps))
 		{
 			return true;
 		}
 	}
 	//下循环
-	std::cout << "进入下循环" << std::endl;
 	 for (int y=p1.y+1;y < HEIGHT;y++)
 	{
 		A.x = p1.x;
@@ -240,13 +247,13 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		{
 			break;
 		}
+		ps.clear();
 		if (link_0(p1, A, ps) && link_1(A, p2, ps))
 		{
 			return true;
 		}
 	}
 	//左循环
-	 std::cout << "进入左循环" << std::endl;
 	 for (int x=p1.x-1;x >= 0;x--)
 	 {
 		 A.y = p1.y;
@@ -255,13 +262,13 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		 {
 			 break;
 		 }
+		 ps.clear();
 		 if (link_0(p1, A, ps) && link_1(A, p2, ps))
 		 {
 			 return true;
 		 }
 	 }
 	//右循环
-	 std::cout << "进入上循环" << std::endl;
 	 for (int x = p1.x+1; x < WIDTH; x++)
 	 {
 		 A.y = p1.y;
@@ -270,6 +277,7 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		 {
 			 break;
 		 }
+		 ps.clear();
 		 if (link_0(p1, A, ps) && link_1(A, p2, ps))
 		 {
 			 return true;

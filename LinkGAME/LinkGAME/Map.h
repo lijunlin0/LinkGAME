@@ -6,8 +6,8 @@
 class Map
 {
 public:
-	static const int HEIGHT = 6;//地图高度
-	static const int WIDTH = 6;//地图宽度
+	static const int HEIGHT = 8;//地图高度
+	static const int WIDTH = 8;//地图宽度
 private:
 	Sprite data[HEIGHT][WIDTH];
 	Position p1;
