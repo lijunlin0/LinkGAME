@@ -2,11 +2,10 @@
 #include<vector>
 #include"Sprite.h"
 #include<iostream>
+#include<cmath>
 #include<windows.h>
 #include<Mmsystem.h>
 #pragma comment(lib,"winmm.lib")
-
-
 Map::Map()
 {
 	std::vector<int> L;
@@ -222,6 +221,17 @@ bool Map::link_1(Position p1, Position p2, std::vector<Position>& ps)
 //2折连接
 bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 {
+	std::vector<Position> points;
+	int min_distance = 999;
+	auto distance = [&]()->int
+	{
+		int sum = 0;
+		for (int i = 0; i < points.size() - 1; i++)
+		{
+			sum += std::abs(points[i].x - points[i + 1].x) + std::abs(points[i].y - points[i + 1].y);
+		}
+		return sum;
+	};
 	//上循环
 	Position A;
 	for (int y=p1.y-1;y >= 0;y--)
@@ -232,10 +242,16 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		{
 			break;
 		}
-		ps.clear();
-		if (link_0(p1,A,ps) && link_1(A, p2, ps))
+		points.clear();
+		if (link_0(p1,A,points) && link_1(A, p2, points))
 		{
-			return true;
+			int dis = distance();
+			if (dis < min_distance)
+			{
+				min_distance = dis;
+				ps.clear();
+				ps.assign(points.begin(), points.end());
+			}
 		}
 	}
 	//下循环
@@ -247,10 +263,16 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		{
 			break;
 		}
-		ps.clear();
-		if (link_0(p1, A, ps) && link_1(A, p2, ps))
+		points.clear();
+		if (link_0(p1, A, points) && link_1(A, p2, points))
 		{
-			return true;
+			int dis = distance();
+			if (dis < min_distance)
+			{
+				min_distance = dis;
+				ps.clear();
+				ps.assign(points.begin(), points.end());
+			}
 		}
 	}
 	//左循环
@@ -262,10 +284,16 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		 {
 			 break;
 		 }
-		 ps.clear();
-		 if (link_0(p1, A, ps) && link_1(A, p2, ps))
+		 points.clear();
+		 if (link_0(p1, A, points) && link_1(A, p2, points))
 		 {
-			 return true;
+			 int dis = distance();
+			 if (dis < min_distance)
+			 {
+				 min_distance = dis;
+				 ps.clear();
+				 ps.assign(points.begin(), points.end());
+			 }
 		 }
 	 }
 	//右循环
@@ -277,11 +305,17 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		 {
 			 break;
 		 }
-		 ps.clear();
-		 if (link_0(p1, A, ps) && link_1(A, p2, ps))
+		 points.clear();
+		 if (link_0(p1, A, points) && link_1(A, p2, points))
 		 {
-			 return true;
+			 int dis = distance();
+			 if (dis < min_distance)
+			 {
+				 min_distance = dis;
+				 ps.clear();
+				 ps.assign(points.begin(), points.end());
+			 }
 		 }
 	 }
-	return false;
+	 return !ps.empty();
 }
