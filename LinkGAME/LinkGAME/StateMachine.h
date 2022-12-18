@@ -1,5 +1,4 @@
 #pragma once
-#include"Animator.h"
 #include"Map.h"
 //状态
 //状态变化：
@@ -16,8 +15,6 @@ enum State
 	SelectOne = 1,
 	//选择了两张图片
 	SelectTwo = 2,
-	//播放消除动画
-	Animation=3
 };
 
 class StateMachine
@@ -25,8 +22,6 @@ class StateMachine
 private:
 	//当前状态
 	State m_State;
-	//连线动画
-	Animator* m_Animator;
 	//地图指针
 	Map* m;
 public:
@@ -46,12 +41,4 @@ public:
 
 	//清空高亮中的图片
 	void reset();
-
-	//画线任务
-	void OnAnimation();
-
-	//画线
-	void Update();
-
-
 };

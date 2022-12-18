@@ -25,9 +25,15 @@ public:
 	//画出地图
 	void update();
 	//设置p1逻辑位置
-	void set_p1(Position p);
+	void set_p1(Position p)
+	{
+		p1 = p;
+	}
 	//设置p2逻辑位置
-	void set_p2(Position p);
+	void set_p2(Position p)
+	{
+		p2 = p;
+	}
 	Position get_p1()
 	{
 		return p1;
@@ -36,7 +42,7 @@ public:
 	{
 		return p2;
 	}
-	//是否高亮图片
+	//高亮图片
 	void highlight(Position p,bool b);
 	//入口函数
 	void eliminate(Position p);

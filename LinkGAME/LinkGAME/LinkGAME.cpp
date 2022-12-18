@@ -13,7 +13,9 @@ using namespace std;
 int main()
 {
 	srand((unsigned)time(NULL));//根据系统时间改变的随机种子
-	initgraph(512,512);//窗口大小：512*512
+	int screen_width = Position::LOGIC_TO_PIXEL_FACTOR * Map::WIDTH;
+	int screen_height = Position::LOGIC_TO_PIXEL_FACTOR * Map::HEIGHT;
+	initgraph(screen_width,screen_height);//设置窗口大小
 	Map m;
 	StateMachine s(&m);//创建状态机
 	ExMessage msg;//创建消息变量
@@ -45,10 +47,6 @@ int main()
 						s.Set_State(State::SelectTwo);
 					}
 				}
-				else if (s.Get_State() == State::SelectTwo)//如果状态为选择了两张图片
-				{
-					s.Set_State(State::Animation);
-				}
 			}
 			else
 			{
@@ -57,9 +55,7 @@ int main()
 		}
 		m.update();
 		this_thread::sleep_for(std::chrono::milliseconds(6));
-
 	}
-	getchar();
 	closegraph();
 	return 0;
 }

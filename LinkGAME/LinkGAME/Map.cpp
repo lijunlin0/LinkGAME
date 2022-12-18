@@ -48,25 +48,7 @@ void Map::update()
 			data[i][j].draw();
 		}
 	}
-
-	//for (i = data.begin(); i != data.end(); i++)
-	//{
-	//	i->second.draw();
-	//}
 }
-
-
-void Map::set_p1(Position p)
-{
-	p1.x = p.x;
-	p1.y = p.y;
-}
-
-void Map::set_p2(Position p)
-{
-	p2.x = p.x;
-	p2.y = p.y;
-};
 
 void Map::highlight(Position p,bool b)
 {
@@ -80,14 +62,6 @@ void Map::highlight(Position p,bool b)
 			}
 		}
 	}
-
-	/*for (std::map<Position, Sprite>::iterator i = data.begin(); i != data.end(); i++)
-	{
-		if (i->first.x == p.x && i->first.y == p.y)
-		{
-			i->second.set_select(b);
-		}
-	}*/
 };
 
 //入口函数
@@ -232,37 +206,8 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		}
 		return sum;
 	};
-	//上循环
-	Position A;
-	for (int y=p1.y-1;y >= 0;y--)
+	auto link = [&](Position A)->void
 	{
-		A.x = p1.x;
-		A.y = y;
-		if (data[A.y][A.x].is_valid())
-		{
-			break;
-		}
-		points.clear();
-		if (link_0(p1,A,points) && link_1(A, p2, points))
-		{
-			int dis = distance();
-			if (dis < min_distance)
-			{
-				min_distance = dis;
-				ps.clear();
-				ps.assign(points.begin(), points.end());
-			}
-		}
-	}
-	//下循环
-	 for (int y=p1.y+1;y < HEIGHT;y++)
-	{
-		A.x = p1.x;
-		A.y = y;
-		if (data[A.y][A.x].is_valid())
-		{
-			break;
-		}
 		points.clear();
 		if (link_0(p1, A, points) && link_1(A, p2, points))
 		{
@@ -274,6 +219,30 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 				ps.assign(points.begin(), points.end());
 			}
 		}
+	};
+	//上循环
+	Position A;
+	for (int y=p1.y-1;y >= 0;y--)
+	{
+		A.x = p1.x;
+		A.y = y;
+		if (data[A.y][A.x].is_valid())
+		{
+			break;
+		}
+		link(A);
+		
+	}
+	//下循环
+	 for (int y=p1.y+1;y < HEIGHT;y++)
+	{
+		A.x = p1.x;
+		A.y = y;
+		if (data[A.y][A.x].is_valid())
+		{
+			break;
+		}
+		link(A);
 	}
 	//左循环
 	 for (int x=p1.x-1;x >= 0;x--)
@@ -284,17 +253,7 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		 {
 			 break;
 		 }
-		 points.clear();
-		 if (link_0(p1, A, points) && link_1(A, p2, points))
-		 {
-			 int dis = distance();
-			 if (dis < min_distance)
-			 {
-				 min_distance = dis;
-				 ps.clear();
-				 ps.assign(points.begin(), points.end());
-			 }
-		 }
+		 link(A);
 	 }
 	//右循环
 	 for (int x = p1.x+1; x < WIDTH; x++)
@@ -305,17 +264,7 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 		 {
 			 break;
 		 }
-		 points.clear();
-		 if (link_0(p1, A, points) && link_1(A, p2, points))
-		 {
-			 int dis = distance();
-			 if (dis < min_distance)
-			 {
-				 min_distance = dis;
-				 ps.clear();
-				 ps.assign(points.begin(), points.end());
-			 }
-		 }
+		 link(A);
 	 }
 	 return !ps.empty();
 }

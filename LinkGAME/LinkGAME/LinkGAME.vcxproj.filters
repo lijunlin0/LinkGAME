@@ -23,9 +23,6 @@
     <ClInclude Include="StateMachine.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="Animator.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LinkGAME.cpp">
@@ -41,9 +38,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="StateMachine.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Animator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

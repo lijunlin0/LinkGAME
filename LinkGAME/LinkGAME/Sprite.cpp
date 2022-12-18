@@ -5,13 +5,14 @@ void Sprite::init(Position position, int value)
 {
 	m_value = value;
 	m_valid = true;
-	loadimage(&image, image_name(m_value));
 	m_select = false;
 	int x = 0;
 	int y = 0;
 	m_position.x = position.x;
 	m_position.y = position.y;
 	m_position.to_plotting(x, y);
+
+	loadimage(&image, image_name(m_value));
 	putimage(x, y, &image);
 }
 //ÅÐ¶ÏÊÇ·ñ±»Ïû³ý
@@ -56,10 +57,9 @@ void Sprite::set_select(bool s)
 
 void Sprite::update_image()
 {
-	int x = m_position.x;
-	int y = m_position.y;
-	m_position.to_plotting
-	(x, y);
+	int x = 0;
+	int y = 0;
+	m_position.to_plotting(x, y);
 	if (!m_valid)
 	{
 		clearrectangle(x, y, x + 64, y + 64);

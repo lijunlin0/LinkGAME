@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="LinkGAME.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Position.cpp" />
@@ -135,7 +134,6 @@
     <ClCompile Include="StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animator.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="Sprite.h" />
