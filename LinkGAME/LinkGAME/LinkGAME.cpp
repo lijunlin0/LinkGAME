@@ -9,7 +9,6 @@
 #include <thread>
 
 using namespace std;
-
 int main()
 {
 	srand((unsigned)time(NULL));//根据系统时间改变的随机种子
@@ -28,7 +27,7 @@ int main()
 			int y = msg.y;
 			Position p;
 			 p.from_plotting(x, y);
-			 if (p.isvalid() && m.get_sprite(p).is_valid())
+			 if (m.get_sprite(p).is_valid())
 			{
 				if (s.Get_State() == State::Idle)//如果状态为默认
 				{
@@ -53,7 +52,6 @@ int main()
 				s.Set_State(State::Idle);
 			}
 		}
-		m.update();
 		this_thread::sleep_for(std::chrono::milliseconds(6));
 	}
 	closegraph();

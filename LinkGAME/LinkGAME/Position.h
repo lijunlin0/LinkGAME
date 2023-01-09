@@ -12,6 +12,4 @@ public:
 	void from_plotting(int coordinatesX, int coordinatesY);
 	//逻辑坐标转像素坐标
 	void to_plotting(int& coordinatesX, int& coordinatesY,int offset=0);
-	//是否被消除
-	bool isvalid();
 };

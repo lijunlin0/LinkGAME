@@ -231,7 +231,6 @@ bool Map::link_2(Position p1, Position p2, std::vector<Position>& ps)
 			break;
 		}
 		link(A);
-		
 	}
 	//ÏÂÑ­»·
 	 for (int y=p1.y+1;y < HEIGHT;y++)

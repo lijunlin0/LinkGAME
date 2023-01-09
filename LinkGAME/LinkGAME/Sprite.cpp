@@ -8,8 +8,7 @@ void Sprite::init(Position position, int value)
 	m_select = false;
 	int x = 0;
 	int y = 0;
-	m_position.x = position.x;
-	m_position.y = position.y;
+	m_position = position;
 	m_position.to_plotting(x, y);
 
 	loadimage(&image, image_name(m_value));

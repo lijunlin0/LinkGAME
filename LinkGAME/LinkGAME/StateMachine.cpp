@@ -7,6 +7,7 @@
 StateMachine::StateMachine(Map* mp)
 {
 	m = mp;
+	m_State = Idle;
 };
 //根据状态显示
 void StateMachine::Set_State(State state)//根据传入状态进行相应的操作
@@ -71,7 +72,6 @@ void StateMachine::On_SelectTwo()
 		reset();
 		Set_State(State::Idle);
 	}
-	
 };
 //清空高亮中的图片
 void StateMachine::reset()

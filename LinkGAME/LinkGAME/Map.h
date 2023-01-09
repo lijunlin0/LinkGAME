@@ -45,8 +45,11 @@ public:
 	//高亮图片
 	void highlight(Position p,bool b);
 	//入口函数
-	void eliminate(Position p);
 	bool link(Position p1, Position p2, std::vector<Position>& ps);
+	
+	//消除函数
+	void eliminate(Position p);
+
 	const Sprite& get_sprite(Position p)
 	{
 		return data[p.y][p.x];

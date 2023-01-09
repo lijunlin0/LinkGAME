@@ -15,12 +15,3 @@ void Position::to_plotting(int& coordinatesX, int& coordinatesY,int offset)
 	coordinatesX = x* factor+offset;
 	coordinatesY = y* factor+offset;
 }
-
-bool Position::isvalid()
-{
-	if (x < 0 || x >= Map::WIDTH || y < 0 || y >= Map::HEIGHT)
-	{
-		return false;
-	}
-	return true;
-}
